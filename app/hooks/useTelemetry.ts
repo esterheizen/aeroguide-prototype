@@ -23,7 +23,7 @@ function generateMockTelemetry(prevState?: UAVTelemetry): UAVTelemetry {
     baseHeading,
   );
 
-  const baseSpeed = prevState?.speed ?? 80;
+  const baseSpeed = prevState?.speed ?? 75;
   const speed = Math.max(0, baseSpeed + (Math.random() - 0.5) * 2);
 
   // Track the active leg with small heading noise
