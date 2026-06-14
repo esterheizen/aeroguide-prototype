@@ -146,6 +146,48 @@ if (!started) {
             </span>
           </div>
         </div>
+<div className="mb-8">
+  <div className="bg-gray-800 rounded-lg p-6 shadow-lg">
+    <h2 className="text-xl font-bold mb-4">
+      Decision Model
+    </h2>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div>
+        <h3 className="text-blue-400 font-semibold mb-3">
+          Inputs
+        </h3>
+
+        <ul className="space-y-2 text-sm">
+          <li>Position</li>
+          <li>Heading</li>
+          <li>Speed</li>
+          <li>Altitude</li>
+          <li>Cross-Track Error</li>
+          <li>Disturbance Status</li>
+          <li>Current Waypoint</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 className="text-green-400 font-semibold mb-3">
+          Decision Output
+        </h3>
+
+        <div className="bg-gray-700 rounded p-4">
+          <p className="text-2xl font-bold">
+            {telemetry.behaviourMode === "cruise" && "Continue Flight"}
+            {telemetry.behaviourMode === "climb" && "Adjust Trajectory"}
+            {telemetry.behaviourMode === "descent" && "Descend"}
+            {telemetry.behaviourMode === "landing" && "Prepare Landing"}
+            {telemetry.behaviourMode === "idle" && "Hold Position"}
+            {telemetry.behaviourMode === "emergency" && "Emergency Response"}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
         {/* Primary Flight Display — aviation-style instruments */}
         <div className="mb-8">
