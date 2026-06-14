@@ -108,7 +108,7 @@ if (!started) {
             onClick={handleStart}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded"
           >
-            Start Simulation
+            Start AeroGuide AI
           </button>
         </div>
       </div>
