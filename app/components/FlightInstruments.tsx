@@ -42,9 +42,9 @@ interface AltitudeIndicatorProps {
 export function AltitudeIndicator({
   altitude,
   min = 0,
-  max = 1000,
-  warningThreshold = 800,
-  criticalThreshold = 950,
+  max = 2000,
+  warningThreshold = 1600,
+  criticalThreshold = 1900,
 }: AltitudeIndicatorProps) {
   const clampedAlt = Math.min(max, Math.max(min, altitude));
   const tapeRange = max - min;
@@ -232,9 +232,9 @@ interface AirspeedIndicatorProps {
 export function AirspeedIndicator({
   speed,
   min = 0,
-  max = 50,
-  warningThreshold = 40,
-  criticalThreshold = 48,
+  max = 100,
+  warningThreshold = 80,
+  criticalThreshold = 90,
 }: AirspeedIndicatorProps) {
   const clampedSpeed = Math.min(max, Math.max(min, speed));
   const tapeRange = max - min;

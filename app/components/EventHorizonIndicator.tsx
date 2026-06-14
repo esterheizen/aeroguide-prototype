@@ -328,10 +328,10 @@ export function EventHorizonDashboard({
         label="Airspeed"
         value={speed}
         min={0}
-        max={50}
+        max={120}
         unit="m/s"
-        warningThreshold={40}
-        criticalThreshold={48}
+        warningThreshold={90}
+        criticalThreshold={110}
         showEventHorizon={showStatusMessages}
       />
 
