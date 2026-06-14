@@ -63,11 +63,45 @@ const [started, setStarted] = useState(false);
     emergency: "alert" as const,
   };
 
+    const getDecisionOutput = () => {
+  if (telemetry.behaviourMode === "emergency") {
+    return "Emergency Response";
+  }
+
+  if (telemetry.disturbanceDetected) {
+    return "Correct Trajectory";
+  }
+
+  if (Math.abs(telemetry.crossTrackError) > 20) {
+    return "Change Trajectory";
+  }
+
+  if (telemetry.behaviourMode === "landing") {
+    return "Prepare Landing";
+  }
+
+  if (telemetry.behaviourMode === "climb") {
+    return "Climb";
+  }
+
+  if (telemetry.behaviourMode === "descent") {
+    return "Descend";
+  }
+
+  if (telemetry.behaviourMode === "idle") {
+    return "Hold Position";
+  }
+
+  return "Continue Flight";
+};
+
   const handleStart = () => {
   if (!latitude || !longitude) {
     alert("Please enter both coordinates");
     return;
   }
+
+
 
   console.log("Got coordinates:", {
     latitude: Number(latitude),
@@ -146,43 +180,78 @@ if (!started) {
             </span>
           </div>
         </div>
+{/* Decision Model */}
 <div className="mb-8">
-  <div className="bg-gray-800 rounded-lg p-6 shadow-lg">
-    <h2 className="text-xl font-bold mb-4">
-      Decision Model
+  <div className="bg-gray-800 rounded-lg p-6 shadow-lg border border-gray-700">
+    <h2 className="text-xl font-bold mb-6">
+      Model Decisions
     </h2>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {/* Inputs */}
       <div>
-        <h3 className="text-blue-400 font-semibold mb-3">
+        <h3 className="text-blue-400 font-semibold mb-4">
           Inputs
         </h3>
 
-        <ul className="space-y-2 text-sm">
-          <li>Position</li>
-          <li>Heading</li>
-          <li>Speed</li>
-          <li>Altitude</li>
-          <li>Cross-Track Error</li>
-          <li>Disturbance Status</li>
-          <li>Current Waypoint</li>
-        </ul>
+        <div className="space-y-3 text-sm">
+          <div className="flex justify-between border-b border-gray-700 pb-2">
+            <span>Latitude</span>
+            <span>{telemetry.mapState.latitude.toFixed(6)}</span>
+          </div>
+
+          <div className="flex justify-between border-b border-gray-700 pb-2">
+            <span>Longitude</span>
+            <span>{telemetry.mapState.longitude.toFixed(6)}</span>
+          </div>
+
+          <div className="flex justify-between border-b border-gray-700 pb-2">
+            <span>Heading</span>
+            <span>{telemetry.heading.toFixed(1)}°</span>
+          </div>
+
+          <div className="flex justify-between border-b border-gray-700 pb-2">
+            <span>Speed</span>
+            <span>{telemetry.speed.toFixed(1)} m/s</span>
+          </div>
+
+          <div className="flex justify-between border-b border-gray-700 pb-2">
+            <span>Altitude</span>
+            <span>{telemetry.altitude.toFixed(1)} m</span>
+          </div>
+
+          <div className="flex justify-between border-b border-gray-700 pb-2">
+            <span>Cross Track Error</span>
+            <span>{telemetry.crossTrackError.toFixed(2)} m</span>
+          </div>
+
+          <div className="flex justify-between">
+            <span>Disturbance</span>
+            <span>
+              {telemetry.disturbanceDetected ? "Detected" : "None"}
+            </span>
+          </div>
+        </div>
       </div>
 
+      {/* Output */}
       <div>
-        <h3 className="text-green-400 font-semibold mb-3">
-          Decision Output
+        <h3 className="text-green-400 font-semibold mb-4">
+          Model Output
         </h3>
 
-        <div className="bg-gray-700 rounded p-4">
-          <p className="text-2xl font-bold">
-            {telemetry.behaviourMode === "cruise" && "Continue Flight"}
-            {telemetry.behaviourMode === "climb" && "Adjust Trajectory"}
-            {telemetry.behaviourMode === "descent" && "Descend"}
-            {telemetry.behaviourMode === "landing" && "Prepare Landing"}
-            {telemetry.behaviourMode === "idle" && "Hold Position"}
-            {telemetry.behaviourMode === "emergency" && "Emergency Response"}
-          </p>
+        <div className="bg-gray-700 rounded-lg p-6 flex flex-col items-center justify-center h-full">
+          <div className="text-gray-400 text-sm mb-2">
+            Current Decision
+          </div>
+
+          <div className="text-3xl font-bold text-green-400 text-center">
+            {getDecisionOutput()}
+          </div>
+
+          <div className="mt-4 text-sm text-gray-300">
+            Behaviour Mode: {telemetry.behaviourMode}
+          </div>
         </div>
       </div>
     </div>
